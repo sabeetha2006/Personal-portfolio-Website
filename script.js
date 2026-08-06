@@ -336,7 +336,7 @@ window.addEventListener('load', () => {
 })();
 
 /* ──────────────────────────────────────────────────
-   11. CONTACT FORM – VALIDATION + SUBMISSION
+   11. CONTACT FORM – VALIDATION + REAL FORMSPREE SUBMISSION
 ────────────────────────────────────────────────── */
 (function initContactForm() {
   const form        = document.getElementById('contactForm');
@@ -413,8 +413,16 @@ window.addEventListener('load', () => {
     });
   });
 
-  // Form submission
-  form.addEventListener('submit', (e) => {
+  // Sync reply-to hidden field with email input (so replies go to the sender)
+  if (emailInput) {
+    emailInput.addEventListener('input', () => {
+      const replyTo = document.getElementById('replyToField');
+      if (replyTo) replyTo.value = emailInput.value.trim();
+    });
+  }
+
+  // Form submission → Real Formspree API fetch
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     // Validate all fields
