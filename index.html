@@ -822,7 +822,11 @@
 
         <!-- Contact Form -->
         <div class="contact-form-wrap" data-aos="fade-left">
-          <form id="contactForm" class="contact-form glass-card" novalidate>
+          <form id="contactForm" class="contact-form glass-card" action="https://formsubmit.co/sabee2k6@gmail.com" method="POST" novalidate>
+            <!-- FormSubmit options -->
+            <input type="hidden" name="_subject" value="New Message from Portfolio Website! 🚀" />
+            <input type="hidden" name="_captcha" value="false" />
+            <input type="hidden" name="_template" value="table" />
             <h3 class="form-title">Send a Message</h3>
 
             <div class="form-row">
@@ -940,9 +944,6 @@
 
   <!-- ==================== TOAST NOTIFICATION ==================== -->
   <div id="toast" class="toast" role="alert" aria-live="polite"></div>
-
-  <!-- EmailJS SDK -->
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
   <!-- Main Script -->
   <script src="script.js"></script>

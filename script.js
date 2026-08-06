@@ -336,21 +336,11 @@ window.addEventListener('load', () => {
 })();
 
 /* ──────────────────────────────────────────────────
-   11. CONTACT FORM – VALIDATION + EMAILJS INTEGRATION
+   11. CONTACT FORM – FORMSUBMIT AJAX INTEGRATION
 ────────────────────────────────────────────────── */
 (function initContactForm() {
   const form        = document.getElementById('contactForm');
   if (!form) return;
-
-  // 🔑 Fill in your EmailJS credentials here:
-  const EMAILJS_PUBLIC_KEY  = 'Vlpdg67BKzeOCoLcu';  // EmailJS Public Key
-  const EMAILJS_SERVICE_ID  = 'service_tkn4ol2';   // EmailJS Service ID
-  const EMAILJS_TEMPLATE_ID = 'template_5e6om4q';  // EmailJS Template ID
-
-  // Initialize EmailJS if public key is set
-  if (window.emailjs && EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY') {
-    emailjs.init(EMAILJS_PUBLIC_KEY);
-  }
 
   const nameInput    = document.getElementById('contactName');
   const emailInput   = document.getElementById('contactEmail');
@@ -423,15 +413,7 @@ window.addEventListener('load', () => {
     });
   });
 
-  // Sync reply-to hidden field with email input (so replies go to the sender)
-  if (emailInput) {
-    emailInput.addEventListener('input', () => {
-      const replyTo = document.getElementById('replyToField');
-      if (replyTo) replyTo.value = emailInput.value.trim();
-    });
-  }
-
-  // Form submission via EmailJS
+  // Form submission via FormSubmit AJAX
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -454,18 +436,36 @@ window.addEventListener('load', () => {
     if (btnLoading) btnLoading.style.display = 'flex';
 
     try {
-      await emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, form, EMAILJS_PUBLIC_KEY);
+      const response = await fetch("https://formsubmit.co/ajax/sabee2k6@gmail.com", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          name: nameInput.value.trim(),
+          email: emailInput.value.trim(),
+          subject: subjectInput.value.trim(),
+          message: msgInput.value.trim(),
+          _subject: `New Message from Portfolio Website: ${subjectInput.value.trim()}`,
+          _captcha: "false"
+        })
+      });
 
-      // Show success message
-      if (successDiv) {
-        successDiv.style.display = 'flex';
-        setTimeout(() => { successDiv.style.display = 'none'; }, 6000);
+      const data = await response.json();
+
+      if (response.ok && data.success === "true") {
+        if (successDiv) {
+          successDiv.style.display = 'flex';
+          setTimeout(() => { successDiv.style.display = 'none'; }, 6000);
+        }
+        form.reset();
+        showToast('✅ Message sent successfully! Check your email. 📧', 5000);
+      } else {
+        throw new Error(data.message || 'Submission failed');
       }
-
-      form.reset();
-      showToast('✅ Message sent successfully! Check your email. 📧', 5000);
     } catch (err) {
-      console.error('EmailJS send error:', err);
+      console.error('FormSubmit error:', err);
       showToast('❌ Failed to send email. Please try again.', 5000);
     } finally {
       if (submitBtn)  submitBtn.disabled = false;
