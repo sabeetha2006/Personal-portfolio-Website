@@ -431,7 +431,7 @@ window.addEventListener('load', () => {
     });
   }
 
-  // Form submission → Real Formspree API fetch
+  // Form submission via EmailJS
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -449,28 +449,29 @@ window.addEventListener('load', () => {
     }
 
     // Show loading state
-    if (submitBtn)   submitBtn.disabled = true;
-    if (btnText)     btnText.style.display    = 'none';
-    if (btnLoading)  btnLoading.style.display = 'flex';
+    if (submitBtn)  submitBtn.disabled = true;
+    if (btnText)    btnText.style.display    = 'none';
+    if (btnLoading) btnLoading.style.display = 'flex';
 
-    // Simulate async API call (2 seconds)
-    setTimeout(() => {
-      // Reset button
-      if (submitBtn)   submitBtn.disabled = false;
-      if (btnText)     btnText.style.display    = 'inline-flex';
-      if (btnLoading)  btnLoading.style.display = 'none';
+    try {
+      await emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, form, EMAILJS_PUBLIC_KEY);
 
       // Show success message
       if (successDiv) {
         successDiv.style.display = 'flex';
-        setTimeout(() => { successDiv.style.display = 'none'; }, 5000);
+        setTimeout(() => { successDiv.style.display = 'none'; }, 6000);
       }
 
-      // Reset form
       form.reset();
-
-      showToast('✅ Message sent successfully!', 4000);
-    }, 2000);
+      showToast('✅ Message sent successfully! Check your email. 📧', 5000);
+    } catch (err) {
+      console.error('EmailJS send error:', err);
+      showToast('❌ Failed to send email. Please try again.', 5000);
+    } finally {
+      if (submitBtn)  submitBtn.disabled = false;
+      if (btnText)    btnText.style.display    = 'inline-flex';
+      if (btnLoading) btnLoading.style.display = 'none';
+    }
   });
 })();
 
