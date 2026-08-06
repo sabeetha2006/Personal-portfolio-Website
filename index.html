@@ -822,13 +822,7 @@
 
         <!-- Contact Form -->
         <div class="contact-form-wrap" data-aos="fade-left">
-          <form id="contactForm" class="contact-form glass-card" novalidate
-            action="https://formspree.io/f/mdenojbe"
-            method="POST">
-            <!-- Formspree hidden fields -->
-            <input type="hidden" name="_subject" value="New Portfolio Message from Sabeetha's Website 🚀" />
-            <input type="hidden" name="_replyto" id="replyToField" value="" />
-            <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
+          <form id="contactForm" class="contact-form glass-card" novalidate>
             <h3 class="form-title">Send a Message</h3>
 
             <div class="form-row">
@@ -946,6 +940,9 @@
 
   <!-- ==================== TOAST NOTIFICATION ==================== -->
   <div id="toast" class="toast" role="alert" aria-live="polite"></div>
+
+  <!-- EmailJS SDK -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
   <!-- Main Script -->
   <script src="script.js"></script>

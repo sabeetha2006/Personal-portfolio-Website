@@ -336,11 +336,21 @@ window.addEventListener('load', () => {
 })();
 
 /* ──────────────────────────────────────────────────
-   11. CONTACT FORM – VALIDATION + REAL FORMSPREE SUBMISSION
+   11. CONTACT FORM – VALIDATION + EMAILJS INTEGRATION
 ────────────────────────────────────────────────── */
 (function initContactForm() {
   const form        = document.getElementById('contactForm');
   if (!form) return;
+
+  // 🔑 Fill in your EmailJS credentials here:
+  const EMAILJS_PUBLIC_KEY  = 'Vlpdg67BKzeOCoLcu';  // EmailJS Public Key
+  const EMAILJS_SERVICE_ID  = 'service_tkn4ol2';   // EmailJS Service ID
+  const EMAILJS_TEMPLATE_ID = 'template_5e6om4q';  // EmailJS Template ID
+
+  // Initialize EmailJS if public key is set
+  if (window.emailjs && EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY') {
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+  }
 
   const nameInput    = document.getElementById('contactName');
   const emailInput   = document.getElementById('contactEmail');
